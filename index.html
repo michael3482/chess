@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Проект "Шахматы"</title>
+        <style>
+            :root {
+                --primary-color: #2c3e50;
+                --secondary-color: #34495e;
+                --accent-color: #e74c3c;
+                --light-color: #ecf0f1;
+                --dark-color: #1a252f;
+                --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            body {
+                background-color: var(--light-color);
+                color: var(--primary-color);
+                line-height: 1.6;
+            }
+
+            header {
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-color),
+                    var(--secondary-color)
+                );
+                color: white;
+                padding: 2rem 0;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .header-pattern {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: linear-gradient(
+                        45deg,
+                        rgba(255, 255, 255, 0.05) 25%,
+                        transparent 25%
+                    ),
+                    linear-gradient(
+                        -45deg,
+                        rgba(255, 255, 255, 0.05) 25%,
+                        transparent 25%
+                    ),
+                    linear-gradient(
+                        45deg,
+                        transparent 75%,
+                        rgba(255, 255, 255, 0.05) 75%
+                    ),
+                    linear-gradient(
+                        -45deg,
+                        transparent 75%,
+                        rgba(255, 255, 255, 0.05) 75%
+                    );
+                background-size: 20px 20px;
+                background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            }
+
+            .container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+                position: relative;
+                z-index: 1;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+                position: relative;
+                display: inline-block;
+            }
+
+            h1::after {
+                content: "";
+                position: absolute;
+                width: 50%;
+                height: 3px;
+                background-color: var(--accent-color);
+                bottom: -10px;
+                left: 25%;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+                opacity: 0.9;
+                margin-bottom: 2rem;
+            }
+
+            .author-section {
+                background-color: white;
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-top: -3rem;
+                box-shadow: var(--shadow);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .author-info {
+                flex: 1;
+                min-width: 250px;
+            }
+
+            .author-info h2 {
+                color: var(--secondary-color);
+                margin-bottom: 0.5rem;
+                font-size: 1.3rem;
+            }
+
+            .author-info p {
+                margin: 5px 0;
+                color: var(--secondary-color);
+            }
+
+            .author-contact {
+                display: flex;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            .author-contact svg {
+                margin-right: 10px;
+                fill: var(--accent-color);
+            }
+
+            .modules-container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                padding: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .modules-header {
+                text-align: center;
+                margin-bottom: 2rem;
+                position: relative;
+            }
+
+            .modules-header h2 {
+                font-size: 1.8rem;
+                color: var(--primary-color);
+            }
+
+            .modules-header::after {
+                content: "";
+                position: absolute;
+                width: 80px;
+                height: 3px;
+                background-color: var(--accent-color);
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .module-card {
+                background-color: white;
+                border-left: 4px solid var(--accent-color);
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .module-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            }
+
+            .module-card h3 {
+                color: var(--primary-color);
+                margin-bottom: 0.8rem;
+                display: flex;
+                align-items: center;
+            }
+
+            .module-number {
+                background-color: var(--primary-color);
+                color: white;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+                font-size: 0.9rem;
+                font-weight: bold;
+            }
+
+            .module-card p {
+                color: var(--secondary-color);
+                line-height: 1.6;
+            }
+
+            .module-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 30px 30px 0;
+                border-color: transparent var(--light-color) transparent
+                    transparent;
+            }
+
+            .doc-link-container {
+                text-align: center;
+                margin: 3rem 0;
+            }
+
+            .doc-link {
+                display: inline-block;
+                background-color: var(--accent-color);
+                color: white;
+                text-decoration: none;
+                padding: 1rem 2rem;
+                border-radius: 30px;
+                font-weight: bold;
+                transition: all 0.3s ease;
+                box-shadow: var(--shadow);
+            }
+
+            .doc-link:hover {
+                background-color: #c0392b;
+                transform: translateY(-3px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .doc-link svg {
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+
+            @media (max-width: 768px) {
+                .author-section {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                h1 {
+                    font-size: 2rem;
+                }
+
+                .subtitle {
+                    font-size: 1rem;
+                }
+
+                .module-card {
+                    padding: 1.2rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="header-pattern"></div>
+            <div class="container">
+                <h1>Проект "Шахматы"</h1>
+                <p class="subtitle">
+                    Модульная архитектура шахматного приложения
+                </p>
+            </div>
+        </header>
+
+        <div class="container">
+            <section class="author-section">
+                <div class="author-info">
+                    <h2>Автор</h2>
+                    <p><strong>ФИО:</strong> Зозуля Михаил Алексеевич</p>
+                    <p><strong>Группа:</strong> ПИ-21в</p>
+                    <div class="author-contact">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                            />
+                        </svg>
+                        <p><strong>Почта:</strong> michael.s5102@gmail.com</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="main-content">
+                <div class="doc-link-container">
+                    <a href="./docs/index.html" class="doc-link">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 4h7v5h5v11H6V4zm8 0v4h4l-4-4z"
+                            />
+                            <path
+                                d="M10 15h4v1h-4v-1zM10 13h4v1h-4v-1zM10 11h4v1h-4v-1z"
+                            />
+                        </svg>
+                        Документация для разработчиков
+                    </a>
+                </div>
+                <div class="modules-container">
+                    <div class="modules-header">
+                        <h2>Структура проекта</h2>
+                    </div>
+
+                    <div class="module-card">
+                        <h3><span class="module-number">1</span> Ядро игры</h3>
+                        <p>
+                            Отвечает за основную логику шахмат: расстановку
+                            фигур, хранение их позиций и обновление доски. Также
+                            управляет правилами (рокировка, превращение пешки) и
+                            историей ходов.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">2</span> Проверка ходов
+                        </h3>
+                        <p>
+                            Проверяет, разрешен ли ход по правилам шахмат.
+                            Определяет, находится ли король под шахом, возможен
+                            ли мат или пат, и блокирует ходы, которые нарушают
+                            правила.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">3</span> Игровой процесс
+                        </h3>
+                        <p>
+                            Управляет ходом игры: очередность ходов, завершение
+                            партии (мат, ничья) и переключение между режимами
+                            (игра с ИИ, сетевая игра или локальная).
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">4</span> Искусственный
+                            интеллект
+                        </h3>
+                        <p>
+                            Реализует логику игры против компьютера.
+                            Поддерживает разные уровни сложности, оценивает
+                            позиции и выбирает лучшие ходы с помощью алгоритмов.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">5</span> Сетевое
+                            взаимодействие
+                        </h3>
+                        <p>
+                            Обеспечивает игру по сети. Устанавливает соединение
+                            между игроками, синхронизирует ходы и обрабатывает
+                            разрывы соединения.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">6</span> Интерфейс
+                            пользователя
+                        </h3>
+                        <p>
+                            Отображает шахматную доску, фигуры и меню.
+                            Показывает возможные ходы, уведомления (шах, мат) и
+                            позволяет выбирать режимы игры.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">7</span> Обработка ввода
+                        </h3>
+                        <p>
+                            Отслеживает действия игрока: клики, перетаскивание
+                            фигур и нажатия клавиш. Преобразует действия в ходы
+                            на доске.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">8</span> Настройки игры
+                        </h3>
+                        <p>
+                            Управляет параметрами игры: уровнем сложности,
+                            цветами доски, звуками и языком интерфейса.
+                            Сохраняет настройки для последующих игр.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">9</span> Сохранение и
+                            загрузка
+                        </h3>
+                        <p>
+                            Позволяет сохранять текущую партию и загружать её
+                            позже. Также поддерживает экспорт и импорт партий в
+                            формате PGN.
+                        </p>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <span class="module-number">10</span> Уведомления и
+                            звуки
+                        </h3>
+                        <p>
+                            Отображает сообщения (например, о ходе соперника или
+                            ошибках) и воспроизводит звуки (ход, шах, победа). В
+                            сетевой игре добавляет чат для общения.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>
