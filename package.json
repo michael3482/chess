@@ -1,0 +1,10 @@
+{
+    "name": "chess",
+    "version": "1.0.0",
+    "scripts": {
+        "createdoc": "jsdoc src -r -d docs"
+    },
+    "dependencies": {
+        "jsdoc": "^4.0.4"
+    }
+}
